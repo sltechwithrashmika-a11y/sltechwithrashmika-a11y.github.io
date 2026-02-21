@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical ICT - Thilina Nayanajith</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Sans+Sinhala:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-color: #f5f5f7;
+            --text-color: #1d1d1f;
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: rgba(0, 0, 0, 0.05);
+            --accent: #0066cc;
+        }
+
+        .dark-mode {
+            --bg-color: #000000;
+            --text-color: #f5f5f7;
+            --glass-bg: rgba(30, 30, 30, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
+            --accent: #2997ff;
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Noto Sans Sinhala', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: radial-gradient(circle at 15% 50%, rgba(0, 102, 204, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(255, 145, 0, 0.1), transparent 25%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Liquid Glass */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 var(--glass-shadow);
+        }
+
+        /* Fixed Navigation */
+        .nav-container {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        nav {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        nav h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        #theme-toggle {
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 150px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid var(--glass-border);
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        /* Layouts */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin: 60px 0 30px;
+            font-weight: 600;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Stats */
+        .stat-card {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        /* Timetable */
+        .class-card {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .class-card .date {
+            font-weight: 600;
+            color: #ff2d55;
+            font-size: 1.2rem;
+        }
+
+        .class-card .time {
+            font-size: 1.1rem;
+        }
+
+        .class-card .location {
+            background: var(--text-color);
+            color: var(--bg-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            align-self: flex-start;
+            font-weight: 600;
+        }
+
+        /* Video */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .yt-btn {
+            display: block;
+            width: max-content;
+            margin: 40px auto;
+            padding: 15px 30px;
+            background: #ff0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .yt-btn:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+
+        /* Resources */
+        .resource-list {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .resource-list li {
+            padding: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resource-list li:last-child {
+            border-bottom: none;
+        }
+
+        .download-btn {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        @media(max-width: 768px) {
+            .hero h2 { font-size: 2.2rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-container">
+        <nav class="glass">
+            <h1>Practical ICT</h1>
+            <div class="nav-links">
+                <a href="#timetable">Timetable</a>
+                <a href="#lessons">Lessons</a>
+                <a href="#resources">Resources</a>
+            </div>
+            <button id="theme-toggle" class="glass" title="Toggle Mode">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </nav>
+    </div>
+
+    <header class="hero">
+        <img src="teacher.png" alt="Thilina Nayanajith" class="hero-img glass">
+        <h2>Thilina Nayanajith</h2>
+        <p>ලංකාවේ අංක එකේ Practical ICT පන්තිය. 2026 A/L තොරතුරු හා සන්නිවේදන තාක්ෂණය.</p>
+    </header>
+
+    <div class="grid-container" style="margin-bottom: 60px;">
+        <div class="stat-card glass">
+            <h3><span id="student-count">0</span>+</h3>
+            <p>Active Students</p>
+        </div>
+        <div class="stat-card glass">
+            <h3>100%</h3>
+            <p>Practical Focus</p>
+        </div>
+        <div class="stat-card glass">
+            <h3>A+</h3>
+            <p>Targeted Results</p>
+        </div>
+    </div>
+
+    <h2 class="section-title" id="timetable">Class Timetable</h2>
+    <div class="grid-container">
+        <div class="class-card glass">
+            <div class="date">May 26 - ඉරිදා</div>
+            <div class="time">ප.ව. 1.30 - 3.30</div>
+            <div class="location">නැණපියස - ගාල්ල</div>
+        </div>
+        
+        <div class="class-card glass">
+            <div class="date">June 01 - සෙනසුරාදා</div>
+            <div class="time">පෙ.ව. 8.00 - 10.00</div>
+            <div class="location">OXFORD - පෝද්දල</div>
+        </div>
+
+        <div class="class-card glass">
+            <div class="date">May 26 - ඉරිදා</div>
+            <div class="time">පෙ.ව. 9.00 - 11.00</div>
+            <div class="location">සිග්මා - මාවඩවිල</div>
+        </div>
+    </div>
+
+    <h2 class="section-title" id="lessons">Online Lessons</h2>
+    <div class="grid-container">
+        <div class="glass video-wrapper">
+            <iframe src="https://www.youtube.com/embed/6QfgktNFADA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="glass video-wrapper">
+            <iframe src="https://www.youtube.com/embed/YPeSjn7DAE0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    <a href="https://youtube.com/@ictwiththilinasir?si=-Rc4EAdR-xgSvMIG" target="_blank" class="yt-btn glass">Subscribe to YouTube Channel</a>
+
+    <h2 class="section-title" id="resources">Class Resources</h2>
+    <div class="grid-container">
+        <div class="glass">
+            <h3 style="padding: 20px; border-bottom: 1px solid var(--glass-border);">Test Rankings (Top 3)</h3>
+            <ul class="resource-list">
+                <li><span>1. Isal Nethsara</span> <span>98%</span></li>
+                <li><span>2. Tharuki Annasiwaththa</span> <span>95%</span></li>
+                <li><span>3. Savindu Methul</span> <span>92%</span></li>
+            </ul>
+        </div>
+        <div class="glass">
+            <h3 style="padding: 20px; border-bottom: 1px solid var(--glass-border);">Past Papers</h3>
+            <ul class="resource-list">
+                <li><span>2023 A/L ICT Paper</span> <a href="#" class="download-btn">Download PDF</a></li>
+                <li><span>2022 A/L ICT Paper</span> <a href="#" class="download-btn">Download PDF</a></li>
+                <li><span>Term Test 01 Model</span> <a href="#" class="download-btn">Download PDF</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Practical ICT by Thilina Nayanajith. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        const countElement = document.getElementById('student-count');
+        const targetCount = 2500; 
+        const duration = 2000; 
+        const frameDuration = 1000 / 60; 
+        const totalFrames = Math.round(duration / frameDuration);
+        const easeOutQuad = t => t * (2 - t); 
+
+        let frame = 0;
+        const countUp = () => {
+            frame++;
+            const progress = easeOutQuad(frame / totalFrames); 
+            const currentCount = Math.round(targetCount * progress);
+            
+            if (frame < totalFrames) {
+                countElement.textContent = currentCount;
+                requestAnimationFrame(countUp);
+            } else {
+                countElement.textContent = targetCount; 
+            }
+        };
+
+        window.addEventListener('load', countUp);
+    </script>
+</body>
+</html>
